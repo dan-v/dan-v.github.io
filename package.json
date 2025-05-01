@@ -1,0 +1,16 @@
+{
+  "name": "dan-v.github.io",
+  "version": "1.0.0",
+  "description": "Personal website",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./src/styles/main.css -o ./dist/style.css --minify",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

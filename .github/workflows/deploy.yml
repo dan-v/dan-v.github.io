@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build CSS
+        run: |
+          mkdir -p dist
+          npx tailwindcss -i ./src/styles/main.css -o ./dist/style.css --minify
+          echo "Built CSS file size:"
+          ls -lh dist/style.css
+
+      - name: Prepare deployment
+        run: |
+          mkdir -p deploy
+          mkdir -p deploy/dist
+          cp index.html deploy/
+          cp dist/style.css deploy/dist/
+          cp CNAME deploy/
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: deploy
+          branch: gh-pages
+          clean: true
